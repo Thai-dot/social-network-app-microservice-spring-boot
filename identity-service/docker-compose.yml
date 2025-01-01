@@ -1,0 +1,14 @@
+version: '4'
+services:
+  mysql:
+    image: mysql:8.3.0
+    container_name: mysql-identity
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: identity_user
+      MYSQL_PASSWORD: identity_user
+    ports:
+      - "3336:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql

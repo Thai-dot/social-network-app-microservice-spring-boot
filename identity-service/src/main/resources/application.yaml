@@ -2,17 +2,21 @@ server:
   port: 8080
   servlet:
     context-path: /identity
-
+profile:
+  url: "http://localhost:8081/profile"
 spring:
   datasource:
-    url: "jdbc:mysql://localhost:3306/bookteria_identity"
-    driverClassName: "com.mysql.cj.jdbc.Driver"
+    url: "jdbc:mysql://localhost:3336/identity_service"
+    driver-class-name: "com.mysql.cj.jdbc.Driver"
     username: root
     password: root
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      hibernate:
+        dialect: "org.hibernate.dialect.MySQL8Dialect"
 
 jwt:
   signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"
