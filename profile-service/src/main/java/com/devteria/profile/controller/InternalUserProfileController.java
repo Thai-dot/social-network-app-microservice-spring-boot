@@ -11,23 +11,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user-profile")
+@RequestMapping("/internal/user-profile")
 @RequiredArgsConstructor
-public class UserProfileController {
+public class InternalUserProfileController {
 
     private final UserProfileService userProfileService;
 
-
-    @GetMapping("/{profileID}")
-    ResponseEntity<ApiResponse<UserProfileCreationResponse>>  getUserProfile(@PathVariable String profileID) {
-        UserProfileCreationResponse userProfile= userProfileService.getUserProfile(profileID);
-
+    @PostMapping("/")
+    ResponseEntity<ApiResponse<UserProfileCreationResponse>>  createUserProfile(@Valid @RequestBody  UserProfileCreationRequest request) {
+        UserProfileCreationResponse userProfile = userProfileService.createUserProfile(request);
         ApiResponse<UserProfileCreationResponse> response = new ApiResponse<>(
-                "User Profile fetched successfully",
+                "User Profile created successfully",
                 HttpStatus.OK.value(),
                 userProfile
         );
 
         return new ResponseEntity<>(response,HttpStatus.OK);
+
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.web.service.annotation.PostExchange;
 
 public interface ProfileClient {
 
-    @PostExchange("/user-profile/")
+    @PostExchange("/internal/user-profile/")
     ResponseEntity<ApiResponse<UserProfileCreationResponse>>  createUserProfile(@RequestBody UserProfileCreationRequest request);
 
 }
