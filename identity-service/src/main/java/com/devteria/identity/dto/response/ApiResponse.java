@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Deprecated
 public class ApiResponse<T> {
     private String message;
     private int httpCode;

@@ -6,6 +6,7 @@ import java.util.List;
 import com.devteria.identity.client.ProfileClient;
 import com.devteria.identity.dto.request.UserProfileCreationRequest;
 import com.devteria.identity.mapper.ProfileMapper;
+import jakarta.servlet.ServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +59,9 @@ public class UserService {
         User savedUser = userRepository.save(user);
         UserProfileCreationRequest requestProfile = profileMapper.toUserProfileCreationRequest(request);
         requestProfile.setUserID(savedUser.getId());
+
+
+
         profileClient.createUserProfile(requestProfile);
 
 
