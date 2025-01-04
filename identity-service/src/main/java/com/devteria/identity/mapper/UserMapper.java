@@ -12,6 +12,7 @@ import com.devteria.identity.entity.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+    @Mapping(target = "roles", ignore = true)
     User toUser(UserCreationRequest request);
 
     UserResponse toUserResponse(User user);

@@ -15,6 +15,7 @@ public class UserProfileCreationResponse {
     private String id;
     private String firstName;
     private String lastName;
+    private String email;
     private String city;
     private LocalDate dob;
 }

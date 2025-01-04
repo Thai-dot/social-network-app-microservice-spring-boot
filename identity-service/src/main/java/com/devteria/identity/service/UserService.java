@@ -3,10 +3,12 @@ package com.devteria.identity.service;
 import java.util.HashSet;
 import java.util.List;
 
+import com.devteria.event.dto.NotificationEvent;
 import com.devteria.identity.client.ProfileClient;
 import com.devteria.identity.dto.request.UserProfileCreationRequest;
 import com.devteria.identity.mapper.ProfileMapper;
 import jakarta.servlet.ServletRequest;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,6 +45,7 @@ public class UserService {
     ProfileMapper profileMapper;
     PasswordEncoder passwordEncoder;
     ProfileClient profileClient;
+    KafkaTemplate<String, Object> kafkaTemplate;
 
     @Transactional
     public UserResponse createUser(UserCreationRequest request) {
@@ -60,12 +63,13 @@ public class UserService {
         UserProfileCreationRequest requestProfile = profileMapper.toUserProfileCreationRequest(request);
         requestProfile.setUserID(savedUser.getId());
 
-
-
         profileClient.createUserProfile(requestProfile);
 
+        NotificationEvent notificationEvent = NotificationEvent.builder().channel("EMAIL").recipient(savedUser.getEmail()).subject("Welcome to our social network").body("Hello " + savedUser.getUsername()).build();
 
-        return userMapper.toUserResponse(userRepository.save(user));
+        // Public kafka message
+        kafkaTemplate.send("notification-delivery", notificationEvent);
+        return userMapper.toUserResponse(savedUser);
     }
 
     public UserResponse getMyInfo() {

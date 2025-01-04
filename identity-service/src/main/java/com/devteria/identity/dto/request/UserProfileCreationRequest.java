@@ -16,7 +16,7 @@ public class UserProfileCreationRequest {
     String userID;
     String firstName;
     String lastName;
-
+    String email;
     @DobConstraint(min = 10, message = "INVALID_DOB")
     LocalDate dob;
 
