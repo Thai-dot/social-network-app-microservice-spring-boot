@@ -1,4 +1,7 @@
 package com.thaidot.chat.dto;
 
-public class MessageType {
+public enum MessageType {
+    CHAT,
+    JOIN,
+    LEAVE
 }
