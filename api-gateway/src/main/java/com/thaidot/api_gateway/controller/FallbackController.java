@@ -7,6 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class FallbackController {
+    @GetMapping("/fallback/aggregator-service")
+    public ResponseEntity<String> fallbackAggregator() {
+        return new ResponseEntity<>("Aggregator Service is temporarily unavailable. Please try again later.",
+                HttpStatus.SERVICE_UNAVAILABLE);
+    }
+
     @GetMapping("/fallback/profile-service")
     public ResponseEntity<String> fallbackProfile() {
         return new ResponseEntity<>("Profile Service is temporarily unavailable. Please try again later.",

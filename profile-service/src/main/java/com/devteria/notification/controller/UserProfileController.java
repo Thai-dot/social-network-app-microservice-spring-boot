@@ -43,4 +43,17 @@ public class UserProfileController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/id/{userId}")
+    ResponseEntity<ApiResponse<UserProfileCreationResponse>> getProfileByUserId(@PathVariable String userId) {
+        UserProfileCreationResponse userProfile = userProfileService.getProfileByUserId(userId);
+
+        ApiResponse<UserProfileCreationResponse> response = new ApiResponse<>(
+                1000,
+                "User Profile fetched successfully",
+                userProfile
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

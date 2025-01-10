@@ -1,6 +1,5 @@
 package com.devteria.identity.mapper;
 
-import com.devteria.identity.dto.request.UserProfileCreationRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

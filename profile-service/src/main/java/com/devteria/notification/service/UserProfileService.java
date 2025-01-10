@@ -39,4 +39,13 @@ public class UserProfileService {
 
         return profiles.stream().map(userProfileMapper::toUserProfileResponse).toList();
     }
+
+    public UserProfileCreationResponse getProfileByUserId(String userID) {
+
+            UserProfile userProfile = userProfileRepository.findByUserID(userID).orElseThrow(() -> new RuntimeException("User profile not found"));
+            return userProfileMapper.toUserProfileResponse(userProfile);
+
+    }
+
+
 }

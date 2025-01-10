@@ -1,0 +1,18 @@
+server:
+  port: 8889
+
+app:
+  prefix: /api/v1
+
+services:
+  post:
+    url: "http://localhost:8888/${app.prefix}/post"
+  profile:
+    url: "http://localhost:8888/${app.prefix}/profile"
+
+spring:
+  application:
+    name: aggregator-service
+  webflux:
+    base-path: /aggregator
+
