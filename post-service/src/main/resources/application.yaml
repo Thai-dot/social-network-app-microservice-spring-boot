@@ -14,7 +14,7 @@ spring:
     active: default
   cloud:
     config:
-      profile: deault
+      profile: default
 eureka:
   client:
     service-url:
