@@ -4,16 +4,16 @@ server:
     context-path: /profile
 
 spring:
+  neo4j:
+    authentication:
+      username: "neo4j"
+      password: "neo4j_password"
+      uri: "bolt://localhost:7687"
+  driver:
+    config:
+      encrypted: true
   application:
     name: profile-service
-    neo4j:
-      authentication:
-        username: "neo4j"
-        password: "neo4j_password"
-        uri: "bolt://localhost:7687"
-    driver:
-      config:
-        encrypted: true
 
 eureka:
   client:
