@@ -8,3 +8,21 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:root@localhost:27018/post-service?authSource=admin
+  config:
+    import: optional:configserver:http://localhost:8890
+  profiles:
+    active: default
+  cloud:
+    config:
+      profile: deault
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+resilience4j:
+  bulkhead:
+    instances:
+      post-service:
+        maxConcurrentCalls: 10
+        maxWaitDuration: 100ms

@@ -5,7 +5,7 @@ app:
   api-prefix: "/api/v1"
 
 identity:
-    url: "http://localhost:8080/identity"
+  url: "http://localhost:8080/identity"
 
 spring:
   application:
@@ -54,7 +54,7 @@ spring:
                 name: myInstanceCircuitBreaker
                 fallbackUri: forward:/fallback/notification-service
         - id: post_service
-          uri: http://localhost:8083
+          uri: lb://post-service
           predicates:
             - Path=${app.api-prefix}/post/**
           filters:
@@ -63,6 +63,19 @@ spring:
               args:
                 name: myInstanceCircuitBreaker
                 fallbackUri: forward:/fallback/post-service
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+          predicates:
+            - name: Path
+              args:
+                pattern: "'/api/v1/'+serviceId.toLowerCase()+'/**'"
+          filters:
+            - name: RewritePath
+              args:
+                regexp: "'/api/v1/'+serviceId.toLowerCase()+'/(?<remaining>.*)'"
+                replacement: "'/${remaining}'"
 
 
 resilience4j.circuitbreaker:
@@ -79,11 +92,19 @@ resilience4j.circuitbreaker:
 resilience4j:
   timelimiter:
     configs:
-        default:
-            timeout-duration: 3s
+      default:
+        timeout-duration: 3s
   retry:
     configs:
-        default:
-            max-attempts: 3
-            waitDuration: 2s
+      default:
+        max-attempts: 3
+        waitDuration: 2s
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/ # Replace with your Eureka server URL
+    fetch-registry: true
+    register-with-eureka: true
+
 

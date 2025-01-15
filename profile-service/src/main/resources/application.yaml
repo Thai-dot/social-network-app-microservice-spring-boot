@@ -4,6 +4,8 @@ server:
     context-path: /profile
 
 spring:
+  application:
+    name: profile-service
     neo4j:
       authentication:
         username: "neo4j"
@@ -12,3 +14,8 @@ spring:
     driver:
       config:
         encrypted: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
