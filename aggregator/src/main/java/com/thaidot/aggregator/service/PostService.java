@@ -4,12 +4,13 @@ import com.thaidot.aggregator.client.PostServiceClient;
 import com.thaidot.aggregator.client.ProfileServiceClient;
 import com.thaidot.aggregator.dto.PageResponse;
 import com.thaidot.aggregator.dto.response.PostWithProfileResponse;
+import com.thaidot.aggregator.exception.AppException;
+import com.thaidot.aggregator.exception.ErrorCode;
 import com.thaidot.aggregator.mapper.PostMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -30,14 +31,17 @@ public class PostService {
                         postServiceClient.getMyPosts(page, size, "Bearer " + token)
                                 .flatMap(response -> {
                                     if (response.getCode() == 1000) {
+                                        if (response.getResult().getData().isEmpty()) {
+                                            return Mono.error(new AppException(ErrorCode.NO_POST_FOUND));
+                                        }
                                         return Mono.just(response.getResult());
                                     } else {
-                                        return Mono.error(new RuntimeException("Error fetching posts"));
+                                        return Mono.error(new AppException(ErrorCode.FETCHING_ERROR));
                                     }
                                 })
                                 .flatMap(postResponses ->
                                         profileServiceClient.getProfileByUserId(postResponses.getData().get(0).getUserId(),
-                                        "Bearer " + token)
+                                                        "Bearer " + token)
                                                 .map(profileResponse -> {
                                                     List<PostWithProfileResponse> postWithProfileResponse =
                                                             postResponses.getData().stream()
@@ -57,7 +61,6 @@ public class PostService {
                                                     return pageResponse;
                                                 })
                                 )
-                )
-                .onErrorResume(e -> Mono.error(new RuntimeException("Error fetching posts or profiles", e)));
+                );
     }
 }

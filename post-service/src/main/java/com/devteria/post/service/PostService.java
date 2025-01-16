@@ -6,6 +6,10 @@ import com.devteria.post.dto.response.PostResponse;
 import com.devteria.post.entity.Post;
 import com.devteria.post.mapper.PostMapper;
 import com.devteria.post.repository.PostRepository;
+import com.devteria.post.utils.stragety.dateformatter.DateFormatterContext;
+import com.devteria.post.utils.stragety.dateformatter.DateFormatterStrategy;
+import com.devteria.post.utils.stragety.dateformatter.DateFormatterStrategyConfig;
+import com.devteria.post.utils.stragety.dateformatter.impl.YearsFormatter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,8 +22,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +33,7 @@ import java.util.List;
 public class PostService {
     PostRepository postRepository;
     PostMapper postMapper;
+    DateFormatterContext context;
 
     public PostResponse createPost(PostRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -49,12 +56,34 @@ public class PostService {
 
         Page<Post> pageData = postRepository.findAllByUserId(userId, pageable);
 
+        Map<Long, DateFormatterStrategy> strategyMap = DateFormatterStrategyConfig.getStrategyMap();
+
+        List<PostResponse> postResponses = pageData.getContent().stream()
+                .map(post -> {
+                    Instant createdDate = post.getCreatedDate();
+                    long seconds = Duration.between(createdDate, Instant.now()).getSeconds();
+
+                    // Find the appropriate strategy based on the seconds elapsed
+                    DateFormatterStrategy selectedStrategy = strategyMap.entrySet().stream()
+                            .filter(entry -> seconds < entry.getKey())
+                            .map(Map.Entry::getValue)
+                            .findFirst()
+                            .orElse(new YearsFormatter()); // Fallback to YearsFormatter if none match
+
+                    context.setStrategy(selectedStrategy);
+
+                    // Map Post to PostResponse and set the formatted date
+                    PostResponse response = postMapper.toPostResponse(post);
+                    response.setFormattedDate(context.format(createdDate));
+                    return response;
+                }).toList();
+
         return PageResponse.<PostResponse>builder()
                 .currentPage(page)
                 .totalPages(pageData.getTotalPages())
                 .pageSize(pageData.getSize())
                 .totalElements(pageData.getTotalElements())
-                .data(pageData.getContent().stream().map(postMapper::toPostResponse).toList())
+                .data(postResponses)
                 .build();
     }
 }

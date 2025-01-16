@@ -10,7 +10,10 @@ public enum ErrorCode {
     INVALID_KEY(1001, "Uncategorized error", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
-    ;
+
+    // Post enum
+    NO_POST_FOUND(1008,"No posts found" , HttpStatus.NOT_FOUND),
+    FETCHING_ERROR(1009, "Error fetching posts", HttpStatus.INTERNAL_SERVER_ERROR);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

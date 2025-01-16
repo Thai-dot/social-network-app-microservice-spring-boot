@@ -17,4 +17,5 @@ public class PostWithProfileResponse {
     UserProfileCreationResponse userProfile;
     Instant createdDate;
     Instant modifiedDate;
+    String formattedDate;
 }
