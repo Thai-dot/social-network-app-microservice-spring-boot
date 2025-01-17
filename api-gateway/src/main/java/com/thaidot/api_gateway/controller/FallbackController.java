@@ -36,4 +36,10 @@ public class FallbackController {
         return new ResponseEntity<>("Notification service is temporarily unavailable. Please try again later.",
                 HttpStatus.SERVICE_UNAVAILABLE);
     }
+
+    @GetMapping("/fallback/file-service")
+    public ResponseEntity<String> fallbackFile() {
+        return new ResponseEntity<>("File service is temporarily unavailable. Please try again later.",
+                HttpStatus.SERVICE_UNAVAILABLE);
+    }
 }

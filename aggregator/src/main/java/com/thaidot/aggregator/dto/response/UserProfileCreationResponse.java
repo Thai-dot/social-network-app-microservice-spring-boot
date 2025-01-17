@@ -17,4 +17,5 @@ public class UserProfileCreationResponse {
     private String lastName;
     private String city;
     private LocalDate dob;
+    private String avatarUrl;
 }

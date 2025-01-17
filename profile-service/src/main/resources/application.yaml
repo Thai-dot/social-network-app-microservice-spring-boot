@@ -3,6 +3,12 @@ server:
   servlet:
     context-path: /profile
 
+avatar:
+  default: "http://localhost:8888/api/v1/file-service/file/upload/avatar/default.jpg"
+
+kafka-topic:
+  profile-avatar-update: "profile-avatar-update"
+
 spring:
   neo4j:
     authentication:
@@ -14,6 +20,16 @@ spring:
       encrypted: true
   application:
     name: profile-service
+
+  kafka:
+    bootstrap-servers: localhost:9094
+    consumer:
+      group-id: profile-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
 
 eureka:
   client:
