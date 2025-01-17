@@ -139,10 +139,10 @@
 				</executions>
 				<configuration>
 					<excludes>
-						<exclude>com/devteria/profile/dto/**</exclude>
-						<exclude>com/devteria/profile/entity/**</exclude>
-						<exclude>com/devteria/profile/mapper/**</exclude>
-						<exclude>com/devteria/profile/configuration/**</exclude>
+						<exclude>com/thaidot/profile/dto/**</exclude>
+						<exclude>com/thaidot/profile/entity/**</exclude>
+						<exclude>com/thaidot/profile/mapper/**</exclude>
+						<exclude>com/thaidot/profile/configuration/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

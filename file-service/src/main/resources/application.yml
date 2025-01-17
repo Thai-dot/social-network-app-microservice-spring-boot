@@ -1,0 +1,31 @@
+server:
+  port: 8085
+  servlet:
+    context-path: /file
+
+file:
+  static-path: "file-service/src/main/resources/static/"
+  size:
+    max: 5242880
+  upload-dir:
+    avatar: "upload/avatar/"
+
+kafka-topic:
+  profile-avatar-update: "profile-avatar-update"
+
+spring:
+  application:
+    name: file-service
+  data:
+    mongodb:
+      uri: mongodb://root:root@localhost:27019/file-service?authSource=admin
+  kafka:
+    bootstrap-servers: localhost:9094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
