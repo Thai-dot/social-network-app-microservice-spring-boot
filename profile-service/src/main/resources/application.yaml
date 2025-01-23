@@ -8,6 +8,7 @@ avatar:
 
 kafka-topic:
   profile-avatar-update: "profile-avatar-update"
+  add-profile-elastic: "add-profile-elastic"
 
 spring:
   neo4j:
@@ -23,6 +24,9 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       group-id: profile-group
       auto-offset-reset: earliest

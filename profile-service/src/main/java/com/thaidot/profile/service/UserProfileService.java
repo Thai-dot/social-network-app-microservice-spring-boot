@@ -18,11 +18,13 @@ import java.util.List;
 public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
     private final UserProfileMapper userProfileMapper;
+    private final KafkaProducer kafkaProducer;
 
     public UserProfileCreationResponse createUserProfile(UserProfileCreationRequest userProfileCreationRequest) {
         UserProfile userProfile = userProfileMapper.toUserProfile(userProfileCreationRequest);
 
         userProfile = userProfileRepository.save(userProfile);
+        kafkaProducer.sendAddProfileElastic(userProfileMapper.toProfileEvent(userProfile));
 
         return userProfileMapper.toUserProfileResponse(userProfile);
     }
