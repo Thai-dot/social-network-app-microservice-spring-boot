@@ -42,4 +42,9 @@ public class FallbackController {
         return new ResponseEntity<>("File service is temporarily unavailable. Please try again later.",
                 HttpStatus.SERVICE_UNAVAILABLE);
     }
+    @GetMapping("/fallback/chat-service")
+    public ResponseEntity<String> fallbackChat() {
+        return new ResponseEntity<>("Chat service is temporarily unavailable. Please try again later.",
+                HttpStatus.SERVICE_UNAVAILABLE);
+    }
 }

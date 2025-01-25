@@ -1,6 +1,22 @@
 spring:
   application:
     name: chat-service
+  data:
+      mongodb:
+        uri: mongodb://root:root@localhost:27020/chat-service?authSource=admin
+  kafka:
+      bootstrap-servers: localhost:9094
+      producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
 
 server:
   port: 8084
+  servlet:
+    context-path: /chat
+
