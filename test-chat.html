@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.2/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+    <h1>Private Chat</h1>
+
+    <div>
+        <label for="receiver">Receiver:</label>
+        <input type="text" id="receiver" placeholder="Enter receiver username" />
+    </div>
+
+    <div>
+        <label for="message">Message:</label>
+        <input type="text" id="message" placeholder="Enter your message" />
+    </div>
+
+    <button onclick="sendMessage()">Send Message</button>
+
+    <h2>Messages</h2>
+    <ul id="messages"></ul>
+
+    <script>
+        let stompClient = null;
+
+        function connect() {
+            const token = localStorage.getItem("jwt"); // Retrieve the JWT token
+            if (!token) {
+                alert("You need to login and store an access token in localStorage.");
+                return;
+            }
+
+            const socket = new SockJS('http://localhost:8084/chat/chat-websocket');
+            stompClient = Stomp.over(socket);
+
+            stompClient.connect(
+                { token: `${token}` }, // Pass the token in headers
+                function () {
+                    console.log("Connected to WebSocket!");
+
+                    // Subscribe to private messages
+                    stompClient.subscribe('/user/queue/reply', function (message) {
+                        const parsedMessage = JSON.parse(message.body);
+                        displayMessage(parsedMessage.sender, parsedMessage.content);
+                    });
+                },
+                function (error) {
+                    console.error("WebSocket connection error:", error);
+                }
+            );
+        }
+
+        function sendMessage() {
+            const receiver = document.getElementById("receiver").value;
+            const content = document.getElementById("message").value;
+
+            if (!receiver || !content) {
+                alert("Receiver and message fields cannot be empty.");
+                return;
+            }
+
+            const message = {
+                receiverIds: [receiver],
+                content: content
+            };
+
+            stompClient.send('/app/private-message', {}, JSON.stringify(message));
+            displayMessage("You", content); // Show the sent message
+        }
+
+        function displayMessage(sender, content) {
+            const messagesList = document.getElementById("messages");
+            const newMessage = document.createElement("li");
+            newMessage.textContent = `${sender}: ${content}`;
+            messagesList.appendChild(newMessage);
+        }
+
+        // Connect to WebSocket when the page loads
+        window.onload = connect;
+    </script>
+</body>
+</html>
