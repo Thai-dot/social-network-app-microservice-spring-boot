@@ -1,6 +1,6 @@
 package com.thaidot.profile.controller;
 
-import com.thaidot.profile.dto.request.ApiResponse;
+import com.thaidot.profile.dto.ApiResponse;
 import com.thaidot.profile.dto.request.UserProfileCreationRequest;
 import com.thaidot.profile.dto.response.UserProfileCreationResponse;
 import com.thaidot.profile.service.UserProfileService;
@@ -24,7 +24,6 @@ public class InternalUserProfileController {
 
     @PostMapping("/internal/user-profile")
     ResponseEntity<ApiResponse<UserProfileCreationResponse>>  createUserProfile(@Valid @RequestBody  UserProfileCreationRequest request) {
-      log.error("request {}: ", request);
         UserProfileCreationResponse userProfile = userProfileService.createUserProfile(request);
         userProfile.setAvatarUrl(defaultAvatarUrl);
         ApiResponse<UserProfileCreationResponse> response = new ApiResponse<>(

@@ -1,10 +1,14 @@
 package com.thaidot.profile.service;
 
+import com.thaidot.profile.dto.request.FollowRequest;
 import com.thaidot.profile.dto.request.UserProfileCreationRequest;
 import com.thaidot.profile.dto.response.UserProfileCreationResponse;
 import com.thaidot.profile.entity.UserProfile;
+import com.thaidot.profile.exception.AppException;
+import com.thaidot.profile.exception.ErrorCode;
 import com.thaidot.profile.mapper.UserProfileMapper;
 import com.thaidot.profile.repository.UserProfileRepository;
+import com.thaidot.profile.utils.GetJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,6 +23,7 @@ public class UserProfileService {
     private final UserProfileRepository userProfileRepository;
     private final UserProfileMapper userProfileMapper;
     private final KafkaProducer kafkaProducer;
+
 
     public UserProfileCreationResponse createUserProfile(UserProfileCreationRequest userProfileCreationRequest) {
         UserProfile userProfile = userProfileMapper.toUserProfile(userProfileCreationRequest);
@@ -44,10 +49,8 @@ public class UserProfileService {
 
     public UserProfileCreationResponse getProfileByUserId(String userID) {
 
-            UserProfile userProfile = userProfileRepository.findByUserID(userID).orElseThrow(() -> new RuntimeException("User profile not found"));
-            return userProfileMapper.toUserProfileResponse(userProfile);
+        UserProfile userProfile = userProfileRepository.findByUserID(userID).orElseThrow(() -> new RuntimeException("User profile not found"));
+        return userProfileMapper.toUserProfileResponse(userProfile);
 
     }
-
-
 }

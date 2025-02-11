@@ -1,6 +1,6 @@
 package com.thaidot.profile.configuration;
 
-import com.thaidot.profile.dto.request.ApiResponse;
+import com.thaidot.profile.dto.ApiResponse;
 import com.thaidot.profile.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

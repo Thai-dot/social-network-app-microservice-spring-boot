@@ -1,7 +1,6 @@
 package com.thaidot.profile.service;
 
 import com.thaidot.event.dto.ProfileEvent;
-import com.thaidot.event.dto.UpdateAvatarProfileEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
