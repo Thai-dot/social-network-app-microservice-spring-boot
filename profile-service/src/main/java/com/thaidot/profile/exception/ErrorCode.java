@@ -15,7 +15,12 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
     INVALID_DOB(1008, "Your age must be at least {min}", HttpStatus.BAD_REQUEST),
-    USER_NOT_FOUND(1009, "User not found", HttpStatus.NOT_FOUND);
+    USER_NOT_FOUND(1009, "User not found", HttpStatus.NOT_FOUND), ALREADY_ACCEPTED(1010, "Friend request is already " +
+            "accepted", HttpStatus.BAD_REQUEST), REQUEST_NOT_FOUND(1011, "Friend request not found",
+            HttpStatus.NOT_FOUND), ALREADY_FRIENDS(1012, "Already friend", HttpStatus.BAD_REQUEST),
+    FRIENDSHIP_NOT_EXISTED(1013, "Friendship not existed", HttpStatus.BAD_REQUEST), CANNOT_FOLLOW_YOURSELF(1014, "Cannot follow/unfollow yourself", HttpStatus.BAD_REQUEST),
+    ALREADY_FOLLOWING(1015, "Already Following User", HttpStatus.BAD_REQUEST),
+    ALREADY_UNFOLLOWING(1016, "Already Unfollowing User", HttpStatus.BAD_REQUEST), FRIEND_REQUEST_EXISTED(1017, "Friend request existed", HttpStatus.BAD_REQUEST);
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {
         this.code = code;

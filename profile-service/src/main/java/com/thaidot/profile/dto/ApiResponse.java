@@ -1,4 +1,4 @@
-package com.thaidot.profile.dto.request;
+package com.thaidot.profile.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

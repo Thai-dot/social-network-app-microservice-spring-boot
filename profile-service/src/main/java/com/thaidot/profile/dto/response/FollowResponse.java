@@ -9,9 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Deprecated
-public class ApiResponse<T> {
-    private String message;
-    private int httpCode;
-    private T result;
+public class FollowResponse {
+    private String followerID;
+    private String followeeID;
 }

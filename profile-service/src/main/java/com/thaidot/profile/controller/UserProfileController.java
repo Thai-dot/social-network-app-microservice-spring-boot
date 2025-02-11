@@ -1,6 +1,6 @@
 package com.thaidot.profile.controller;
 
-import com.thaidot.profile.dto.request.ApiResponse;
+import com.thaidot.profile.dto.ApiResponse;
 import com.thaidot.profile.dto.response.UserProfileCreationResponse;
 import com.thaidot.profile.service.UserProfileService;
 import lombok.RequiredArgsConstructor;

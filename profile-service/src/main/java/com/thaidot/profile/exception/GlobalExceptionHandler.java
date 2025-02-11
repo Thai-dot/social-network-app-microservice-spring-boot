@@ -3,7 +3,7 @@ package com.thaidot.profile.exception;
 import java.util.Map;
 import java.util.Objects;
 
-import com.thaidot.profile.dto.request.ApiResponse;
+import com.thaidot.profile.dto.ApiResponse;
 import jakarta.validation.ConstraintViolation;
 
 import org.springframework.http.ResponseEntity;
